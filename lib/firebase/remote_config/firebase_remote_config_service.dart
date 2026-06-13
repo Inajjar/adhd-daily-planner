@@ -10,7 +10,7 @@ class FirebaseRemoteConfigService {
   final FirebaseBootstrap _bootstrap;
 
   static const Map<String, dynamic> _defaults = <String, dynamic>{
-    FirebaseRemoteConfigKeys.bypassSubscriptionEnforcement: true,
+    FirebaseRemoteConfigKeys.bypassSubscriptionEnforcement: false,
     FirebaseRemoteConfigKeys.paywallEnabled: true,
     FirebaseRemoteConfigKeys.onboardingEnabled: true,
     FirebaseRemoteConfigKeys.aiPrioritySuggestionsEnabled: true,
