@@ -1,0 +1,8 @@
+{
+  "REVENUECAT_IOS_KEY": "appl_xxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+  "REVENUECAT_ANDROID_KEY": "",
+  "REVENUECAT_ENTITLEMENT_ID": "ADHD_Daily_Pro",
+  "REVENUECAT_OFFERING_ID": "default",
+  "REVENUECAT_IOS_MONTHLY_PRODUCT_ID": "MonthlyADHD",
+  "REVENUECAT_IOS_YEARLY_PRODUCT_ID": "yearADHD"
+}

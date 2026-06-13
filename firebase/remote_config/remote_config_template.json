@@ -1,0 +1,152 @@
+{
+  "conditions": [],
+  "parameters": {},
+  "parameterGroups": {
+    "app_access": {
+      "description": "Flag di accesso e flusso iniziale di ADHD Daily Planner.",
+      "parameters": {
+        "bypass_subscription_enforcement": {
+          "defaultValue": {
+            "value": "true"
+          },
+          "description": "Disattiva il blocco paywall per test o rollout controllati.",
+          "valueType": "BOOLEAN"
+        },
+        "onboarding_enabled": {
+          "defaultValue": {
+            "value": "true"
+          },
+          "description": "Mostra o nasconde l'onboarding iniziale.",
+          "valueType": "BOOLEAN"
+        },
+        "paywall_enabled": {
+          "defaultValue": {
+            "value": "true"
+          },
+          "description": "Mostra o nasconde il paywall premium.",
+          "valueType": "BOOLEAN"
+        }
+      }
+    },
+    "premium_features": {
+      "description": "Toggle delle feature premium ADHD e AI.",
+      "parameters": {
+        "adhd_emergency_mode_enabled": {
+          "defaultValue": {
+            "value": "true"
+          },
+          "description": "Abilita la modalita ADHD Emergency Mode.",
+          "valueType": "BOOLEAN"
+        },
+        "ai_priority_suggestions_enabled": {
+          "defaultValue": {
+            "value": "true"
+          },
+          "description": "Abilita AI Priority Suggestions.",
+          "valueType": "BOOLEAN"
+        },
+        "auto_rescheduler_enabled": {
+          "defaultValue": {
+            "value": "true"
+          },
+          "description": "Abilita AI Auto Rescheduler.",
+          "valueType": "BOOLEAN"
+        },
+        "daily_ai_plan_enabled": {
+          "defaultValue": {
+            "value": "true"
+          },
+          "description": "Abilita Daily AI Plan.",
+          "valueType": "BOOLEAN"
+        },
+        "energy_matching_enabled": {
+          "defaultValue": {
+            "value": "true"
+          },
+          "description": "Abilita Energy Matching.",
+          "valueType": "BOOLEAN"
+        },
+        "micro_step_generator_enabled": {
+          "defaultValue": {
+            "value": "true"
+          },
+          "description": "Abilita AI Micro Step Generator.",
+          "valueType": "BOOLEAN"
+        },
+        "openai_enabled": {
+          "defaultValue": {
+            "value": "true"
+          },
+          "description": "Abilita le funzioni backend OpenAI.",
+          "valueType": "BOOLEAN"
+        },
+        "overwhelm_detector_enabled": {
+          "defaultValue": {
+            "value": "true"
+          },
+          "description": "Abilita Overwhelm Detector.",
+          "valueType": "BOOLEAN"
+        },
+        "smart_reminders_enabled": {
+          "defaultValue": {
+            "value": "true"
+          },
+          "description": "Abilita reminder contestuali AI.",
+          "valueType": "BOOLEAN"
+        }
+      }
+    },
+    "ai_defaults": {
+      "description": "Modelli e comportamento default dell'AI.",
+      "parameters": {
+        "openai_model": {
+          "defaultValue": {
+            "value": "gpt-5-mini"
+          },
+          "description": "Modello default per feature AI rapide.",
+          "valueType": "STRING"
+        },
+        "openai_reasoning_model": {
+          "defaultValue": {
+            "value": "gpt-5.2"
+          },
+          "description": "Modello da usare per planning o reasoning piu pesante.",
+          "valueType": "STRING"
+        },
+        "show_ai_reason_badges": {
+          "defaultValue": {
+            "value": "true"
+          },
+          "description": "Mostra badge o label AI nel client.",
+          "valueType": "BOOLEAN"
+        }
+      }
+    },
+    "planner_limits": {
+      "description": "Limiti e default del planner ADHD.",
+      "parameters": {
+        "free_brain_dump_limit_per_day": {
+          "defaultValue": {
+            "value": "1"
+          },
+          "description": "Numero massimo di brain dump per utente free al giorno.",
+          "valueType": "NUMBER"
+        },
+        "free_routine_limit": {
+          "defaultValue": {
+            "value": "3"
+          },
+          "description": "Numero massimo di routine per utente free.",
+          "valueType": "NUMBER"
+        },
+        "max_daily_focus_tasks": {
+          "defaultValue": {
+            "value": "3"
+          },
+          "description": "Numero massimo di focus task proposti nel Daily AI Plan.",
+          "valueType": "NUMBER"
+        }
+      }
+    }
+  }
+}

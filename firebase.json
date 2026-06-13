@@ -1,0 +1,19 @@
+{
+  "hosting": {
+    "public": "firebase/public",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  },
+  "functions": {
+    "source": "firebase/functions"
+  },
+  "firestore": {
+    "rules": "firestore.rules"
+  },
+  "remoteconfig": {
+    "template": "firebase/remote_config/remote_config_template.json"
+  }
+}

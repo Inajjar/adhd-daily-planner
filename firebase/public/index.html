@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ADHD Daily Planner</title>
+    <meta
+      name="description"
+      content="ADHD Daily Planner helps you clear mental clutter, plan your day, build routines, and get started with less overwhelm."
+    />
+    <style>
+      :root {
+        --bg: #f4f7fb;
+        --bg-strong: #e7f0ff;
+        --card: rgba(255, 255, 255, 0.82);
+        --text: #152033;
+        --muted: #5e6b81;
+        --line: rgba(21, 32, 51, 0.1);
+        --accent: #0a84ff;
+        --accent-dark: #0b63d1;
+        --accent-soft: #d9ebff;
+        --shadow: 0 24px 70px rgba(13, 31, 56, 0.12);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        color: var(--text);
+        background:
+          radial-gradient(circle at top left, #ffffff 0%, transparent 34%),
+          radial-gradient(circle at top right, #d9ecff 0%, transparent 26%),
+          linear-gradient(180deg, #fafdff 0%, var(--bg) 44%, #edf3fb 100%);
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .wrap {
+        width: min(1120px, calc(100% - 40px));
+        margin: 0 auto;
+      }
+
+      .topbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+        padding: 22px 0;
+      }
+
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 800;
+        letter-spacing: -0.03em;
+      }
+
+      .brand-mark {
+        width: 42px;
+        height: 42px;
+        border-radius: 14px;
+        display: grid;
+        place-items: center;
+        font-size: 20px;
+        background: linear-gradient(135deg, var(--accent) 0%, #67b3ff 100%);
+        color: #fff;
+        box-shadow: 0 14px 32px rgba(10, 132, 255, 0.28);
+      }
+
+      .nav {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      .nav-link,
+      .button {
+        min-height: 46px;
+        padding: 0 18px;
+        border-radius: 999px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+      }
+
+      .nav-link {
+        color: var(--muted);
+      }
+
+      .button {
+        border: 1px solid transparent;
+      }
+
+      .button-primary {
+        background: var(--accent);
+        color: #fff;
+        box-shadow: 0 16px 32px rgba(10, 132, 255, 0.25);
+      }
+
+      .button-primary:hover {
+        background: var(--accent-dark);
+      }
+
+      .button-secondary {
+        background: rgba(255, 255, 255, 0.75);
+        border-color: var(--line);
+      }
+
+      .hero {
+        padding: 22px 0 44px;
+      }
+
+      .hero-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1.15fr) minmax(300px, 0.85fr);
+        gap: 28px;
+        align-items: stretch;
+      }
+
+      .hero-copy,
+      .hero-card,
+      .section-card,
+      .quote-card,
+      .footer-card {
+        backdrop-filter: blur(14px);
+        background: var(--card);
+        border: 1px solid var(--line);
+        box-shadow: var(--shadow);
+      }
+
+      .hero-copy {
+        border-radius: 36px;
+        padding: 40px;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        min-height: 34px;
+        padding: 0 14px;
+        border-radius: 999px;
+        background: var(--accent-soft);
+        color: var(--accent-dark);
+        font-weight: 800;
+        font-size: 13px;
+        letter-spacing: 0.02em;
+        text-transform: uppercase;
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin: 0;
+      }
+
+      h1 {
+        margin-top: 18px;
+        font-size: clamp(42px, 7vw, 76px);
+        line-height: 0.95;
+        letter-spacing: -0.055em;
+        max-width: 10ch;
+      }
+
+      .hero-subtitle {
+        margin-top: 18px;
+        max-width: 34rem;
+        font-size: 19px;
+        line-height: 1.65;
+        color: var(--muted);
+      }
+
+      .hero-actions {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-top: 28px;
+      }
+
+      .hero-points {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+        margin-top: 30px;
+      }
+
+      .hero-point {
+        padding: 16px;
+        border-radius: 22px;
+        background: rgba(255, 255, 255, 0.72);
+        border: 1px solid rgba(21, 32, 51, 0.08);
+      }
+
+      .hero-point strong {
+        display: block;
+        font-size: 15px;
+        margin-bottom: 6px;
+      }
+
+      .hero-point span {
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.5;
+      }
+
+      .hero-card {
+        border-radius: 36px;
+        padding: 22px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .app-shot {
+        padding: 22px;
+        border-radius: 28px;
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, #eef5ff 100%);
+        border: 1px solid rgba(21, 32, 51, 0.08);
+      }
+
+      .mini-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 18px;
+      }
+
+      .mini-title {
+        font-size: 24px;
+        font-weight: 800;
+        letter-spacing: -0.04em;
+      }
+
+      .pill {
+        min-height: 30px;
+        padding: 0 12px;
+        border-radius: 999px;
+        background: #e8f3ff;
+        color: var(--accent-dark);
+        display: inline-flex;
+        align-items: center;
+        font-size: 13px;
+        font-weight: 800;
+      }
+
+      .progress {
+        height: 10px;
+        border-radius: 999px;
+        background: #dce7f6;
+        overflow: hidden;
+      }
+
+      .progress > span {
+        display: block;
+        width: 62%;
+        height: 100%;
+        border-radius: inherit;
+        background: linear-gradient(90deg, var(--accent) 0%, #67b3ff 100%);
+      }
+
+      .shot-card,
+      .task {
+        background: #fff;
+        border-radius: 22px;
+        border: 1px solid rgba(21, 32, 51, 0.08);
+      }
+
+      .shot-card {
+        padding: 18px;
+        margin-top: 16px;
+      }
+
+      .task-list {
+        display: grid;
+        gap: 10px;
+        margin-top: 14px;
+      }
+
+      .task {
+        padding: 14px 16px;
+        display: flex;
+        justify-content: space-between;
+        gap: 14px;
+        align-items: center;
+      }
+
+      .task strong {
+        display: block;
+        font-size: 15px;
+        margin-bottom: 4px;
+      }
+
+      .task span,
+      .shot-card p,
+      .stat span,
+      .section-intro,
+      .feature p,
+      .step p,
+      .quote-card p,
+      .footer-note {
+        color: var(--muted);
+        line-height: 1.6;
+      }
+
+      .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 999px;
+        background: #3dbb7a;
+        flex: 0 0 auto;
+      }
+
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .stat {
+        padding: 18px;
+        border-radius: 22px;
+        background: rgba(10, 132, 255, 0.08);
+      }
+
+      .stat strong {
+        display: block;
+        margin-bottom: 6px;
+        font-size: 22px;
+        letter-spacing: -0.04em;
+      }
+
+      section {
+        padding: 18px 0;
+      }
+
+      .section-head {
+        max-width: 720px;
+        margin-bottom: 22px;
+      }
+
+      .section-kicker {
+        display: inline-block;
+        margin-bottom: 10px;
+        color: var(--accent-dark);
+        font-size: 13px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+      }
+
+      h2 {
+        font-size: clamp(30px, 4vw, 48px);
+        line-height: 1;
+        letter-spacing: -0.05em;
+      }
+
+      .section-intro {
+        margin-top: 14px;
+        font-size: 18px;
+      }
+
+      .features {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 18px;
+      }
+
+      .section-card {
+        border-radius: 30px;
+        padding: 26px;
+      }
+
+      .feature-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 16px;
+        display: grid;
+        place-items: center;
+        font-size: 22px;
+        margin-bottom: 16px;
+        background: linear-gradient(135deg, #eaf4ff 0%, #dcecff 100%);
+      }
+
+      h3 {
+        font-size: 24px;
+        letter-spacing: -0.04em;
+        margin-bottom: 10px;
+      }
+
+      .steps {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 18px;
+      }
+
+      .step-number {
+        display: inline-grid;
+        place-items: center;
+        width: 42px;
+        height: 42px;
+        border-radius: 999px;
+        background: var(--text);
+        color: #fff;
+        font-weight: 800;
+        margin-bottom: 16px;
+      }
+
+      .quote-card {
+        border-radius: 34px;
+        padding: 30px;
+      }
+
+      .quote-card p {
+        font-size: clamp(22px, 3vw, 32px);
+        line-height: 1.35;
+        letter-spacing: -0.04em;
+        color: var(--text);
+      }
+
+      .quote-card strong {
+        display: inline-block;
+        margin-top: 16px;
+        color: var(--accent-dark);
+      }
+
+      .footer-card {
+        border-radius: 34px 34px 0 0;
+        padding: 28px;
+        margin-top: 22px;
+      }
+
+      .footer-grid {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+        flex-wrap: wrap;
+      }
+
+      .footer-links {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      .footer-link {
+        min-height: 42px;
+        padding: 0 16px;
+        border-radius: 999px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.8);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+      }
+
+      @media (max-width: 920px) {
+        .hero-grid,
+        .features,
+        .steps,
+        .hero-points,
+        .stats {
+          grid-template-columns: 1fr;
+        }
+
+        .hero-copy,
+        .hero-card,
+        .section-card,
+        .quote-card,
+        .footer-card {
+          border-radius: 28px;
+        }
+
+        h1 {
+          max-width: 12ch;
+        }
+      }
+
+      @media (max-width: 620px) {
+        .wrap {
+          width: min(100% - 24px, 1120px);
+        }
+
+        .topbar {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+
+        .hero-copy {
+          padding: 28px 22px;
+        }
+
+        .hero-card,
+        .section-card,
+        .quote-card,
+        .footer-card {
+          padding: 22px;
+        }
+
+        .hero-actions,
+        .footer-links,
+        .nav {
+          width: 100%;
+        }
+
+        .button,
+        .nav-link,
+        .footer-link {
+          width: 100%;
+        }
+
+        .hero-subtitle,
+        .section-intro {
+          font-size: 17px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header class="topbar">
+        <a class="brand" href="/index.html" aria-label="ADHD Daily Planner home">
+          <span class="brand-mark">A</span>
+          <span>ADHD Daily Planner</span>
+        </a>
+        <nav class="nav">
+          <a class="nav-link" href="#features">Features</a>
+          <a class="nav-link" href="#how-it-works">How it works</a>
+          <a class="button button-secondary" href="/privacy.html">Privacy</a>
+          <a class="button button-primary" href="/terms.html">Terms</a>
+        </nav>
+      </header>
+
+      <main>
+        <section class="hero">
+          <div class="hero-grid">
+            <div class="hero-copy">
+              <span class="eyebrow">ADHD-first daily planning</span>
+              <h1>Plan less. Start faster.</h1>
+              <p class="hero-subtitle">
+                ADHD Daily Planner helps you clear mental clutter, choose what
+                matters now, and move through your day with less overwhelm and
+                more focus.
+              </p>
+              <div class="hero-actions">
+                <a class="button button-primary" href="#features">Explore features</a>
+                <a class="button button-secondary" href="/privacy.html">View privacy policy</a>
+              </div>
+              <div class="hero-points">
+                <div class="hero-point">
+                  <strong>Clear mental clutter</strong>
+                  <span>Capture thoughts fast before they turn into overwhelm.</span>
+                </div>
+                <div class="hero-point">
+                  <strong>Choose priorities</strong>
+                  <span>Focus on the next step instead of the whole list.</span>
+                </div>
+                <div class="hero-point">
+                  <strong>Build momentum</strong>
+                  <span>Create more follow-through with a calmer daily flow.</span>
+                </div>
+              </div>
+            </div>
+
+            <aside class="hero-card" aria-label="App preview">
+              <div class="app-shot">
+                <div class="mini-top">
+                  <strong class="mini-title">Today</strong>
+                  <span class="pill">4 day streak</span>
+                </div>
+                <div class="progress" aria-hidden="true">
+                  <span></span>
+                </div>
+                <div class="shot-card">
+                  <strong>Daily focus</strong>
+                  <p>Your next best tasks, simplified for today.</p>
+                  <div class="task-list">
+                    <div class="task">
+                      <div>
+                        <strong>Reply to landlord email</strong>
+                        <span>5 minute task</span>
+                      </div>
+                      <span class="dot"></span>
+                    </div>
+                    <div class="task">
+                      <div>
+                        <strong>Start laundry</strong>
+                        <span>Quick reset</span>
+                      </div>
+                      <span class="dot"></span>
+                    </div>
+                    <div class="task">
+                      <div>
+                        <strong>Review afternoon plan</strong>
+                        <span>Stay on track</span>
+                      </div>
+                      <span class="dot"></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="stats">
+                <div class="stat">
+                  <strong>Focus</strong>
+                  <span>Pick a clear next step.</span>
+                </div>
+                <div class="stat">
+                  <strong>Routines</strong>
+                  <span>Repeat what works.</span>
+                </div>
+                <div class="stat">
+                  <strong>Relief</strong>
+                  <span>Reduce planning friction.</span>
+                </div>
+              </div>
+            </aside>
+          </div>
+        </section>
+
+        <section id="features">
+          <div class="section-head">
+            <span class="section-kicker">Why it helps</span>
+            <h2>A planner built for real ADHD days</h2>
+            <p class="section-intro">
+              When everything feels important at once, the hardest part is often
+              getting started. ADHD Daily Planner is designed to reduce friction
+              and make action feel more manageable.
+            </p>
+          </div>
+          <div class="features">
+            <article class="section-card feature">
+              <div class="feature-icon">🧠</div>
+              <h3>Brain dump your thoughts</h3>
+              <p>
+                Get ideas, tasks, and mental clutter out of your head quickly so
+                you can stop carrying everything at once.
+              </p>
+            </article>
+            <article class="section-card feature">
+              <div class="feature-icon">🎯</div>
+              <h3>Choose priorities with less stress</h3>
+              <p>
+                Move from scattered to clear by narrowing your day down to what
+                matters most right now.
+              </p>
+            </article>
+            <article class="section-card feature">
+              <div class="feature-icon">🗓️</div>
+              <h3>Create a calmer daily plan</h3>
+              <p>
+                Turn a messy to-do list into a simpler plan that feels easier to
+                follow through on.
+              </p>
+            </article>
+            <article class="section-card feature">
+              <div class="feature-icon">🔁</div>
+              <h3>Build routines you can repeat</h3>
+              <p>
+                Create realistic structure for daily life with routines that
+                support consistency without adding more pressure.
+              </p>
+            </article>
+          </div>
+        </section>
+
+        <section id="how-it-works">
+          <div class="section-head">
+            <span class="section-kicker">How it works</span>
+            <h2>Simple enough to use when your brain feels full</h2>
+          </div>
+          <div class="steps">
+            <article class="section-card step">
+              <span class="step-number">1</span>
+              <h3>Capture everything</h3>
+              <p>
+                Start with a fast brain dump so you can unload tasks, thoughts,
+                and reminders without overthinking.
+              </p>
+            </article>
+            <article class="section-card step">
+              <span class="step-number">2</span>
+              <h3>Pick the next step</h3>
+              <p>
+                Choose one clear priority instead of trying to solve your whole
+                day at once.
+              </p>
+            </article>
+            <article class="section-card step">
+              <span class="step-number">3</span>
+              <h3>Start with more clarity</h3>
+              <p>
+                Use your plan, routines, and progress view to keep moving with
+                less friction and more confidence.
+              </p>
+            </article>
+          </div>
+        </section>
+
+        <section>
+          <div class="quote-card">
+            <p>
+              “ADHD Daily Planner is for the moment when your brain feels noisy
+              and you just need a simpler way to figure out what to do next.”
+            </p>
+            <strong>Simple planning. Less friction. More focus.</strong>
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer-card">
+        <div class="footer-grid">
+          <div>
+            <strong>ADHD Daily Planner</strong>
+            <p class="footer-note">
+              Daily planning support for focus, routines, and overwhelm.
+            </p>
+          </div>
+          <div class="footer-links">
+            <a class="footer-link" href="/privacy.html">Privacy Policy</a>
+            <a class="footer-link" href="/terms.html">Terms of Service</a>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>
