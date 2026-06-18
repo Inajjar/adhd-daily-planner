@@ -16,3 +16,5 @@ exports.rescheduleTasks =
   require("./src/callables/premiumAi").rescheduleTasks;
 exports.generateSmartReminders =
   require("./src/callables/premiumAi").generateSmartReminders;
+exports.refreshPremiumStatus =
+  require("./src/callables/premiumStatus").refreshPremiumStatus;

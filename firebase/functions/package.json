@@ -6,7 +6,7 @@
   },
   "main": "index.js",
   "scripts": {
-    "lint": "node --check index.js && node --check src/callables/premiumAi.js && node --check src/openai/client.js && node --check src/openai/prompts.js && node --check src/openai/validation.js",
+    "lint": "node --check index.js && node --check src/callables/premiumAi.js && node --check src/callables/premiumStatus.js && node --check src/openai/client.js && node --check src/openai/prompts.js && node --check src/openai/validation.js",
     "serve": "firebase emulators:start --only functions",
     "deploy": "firebase deploy --only functions"
   },

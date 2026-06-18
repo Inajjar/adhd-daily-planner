@@ -1,6 +1,4 @@
 abstract final class FirebaseRemoteConfigKeys {
-  static const String bypassSubscriptionEnforcement =
-      'bypass_subscription_enforcement';
   static const String paywallEnabled = 'paywall_enabled';
   static const String onboardingEnabled = 'onboarding_enabled';
 

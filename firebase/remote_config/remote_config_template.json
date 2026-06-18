@@ -5,13 +5,6 @@
     "app_access": {
       "description": "Flag di accesso e flusso iniziale di ADHD Daily Planner.",
       "parameters": {
-        "bypass_subscription_enforcement": {
-          "defaultValue": {
-            "value": "true"
-          },
-          "description": "Disattiva il blocco paywall per test o rollout controllati.",
-          "valueType": "BOOLEAN"
-        },
         "onboarding_enabled": {
           "defaultValue": {
             "value": "true"

@@ -192,6 +192,8 @@ class _PremiumScreenState extends State<PremiumScreen> {
                               _buildCTAButton(),
                               const SizedBox(height: 14),
                               _buildSecurityNote(),
+                              const SizedBox(height: 14),
+                              _buildSubscriptionDisclosure(),
                               if (!_isAvailable(SubscriptionPlan.monthly) &&
                                   !_isAvailable(SubscriptionPlan.yearly)) ...[
                                 const SizedBox(height: 14),
@@ -424,6 +426,61 @@ class _PremiumScreenState extends State<PremiumScreen> {
     );
   }
 
+  Widget _buildSubscriptionDisclosure() {
+    final monthlyPrice = _price(SubscriptionPlan.monthly);
+    final yearlyPrice = _price(SubscriptionPlan.yearly);
+
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: const Color(0xFFF8FAFC),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: const Color(0xFFDDE4F0)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Subscription details',
+            style: GoogleFonts.inter(
+              fontSize: 14,
+              fontWeight: FontWeight.w700,
+              color: const Color(0xFF111827),
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'Monthly subscription: $monthlyPrice every month.',
+            style: GoogleFonts.inter(
+              fontSize: 13,
+              height: 1.4,
+              color: const Color(0xFF667085),
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            'Yearly subscription: $yearlyPrice every year.',
+            style: GoogleFonts.inter(
+              fontSize: 13,
+              height: 1.4,
+              color: const Color(0xFF667085),
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            'Auto-renewable subscription. Cancel anytime in your App Store account settings.',
+            style: GoogleFonts.inter(
+              fontSize: 13,
+              height: 1.4,
+              color: const Color(0xFF667085),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildStatusNote() {
     return Container(
       width: double.infinity,
@@ -473,7 +530,7 @@ class _PremiumScreenState extends State<PremiumScreen> {
         GestureDetector(
           onTap: () => _openUrl(_termsUrl),
           child: Text(
-            'Terms',
+            'Terms of Use',
             style: GoogleFonts.inter(
               fontSize: 13,
               color: const Color(0xFF667085),

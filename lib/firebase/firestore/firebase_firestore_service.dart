@@ -20,7 +20,6 @@ class FirebaseFirestoreService {
     required bool onboardingComplete,
     required String selectedIntent,
     required String brainDumpText,
-    required bool premium,
     required int streak,
     required String notificationTime,
     required String notificationMode,
@@ -31,7 +30,6 @@ class FirebaseFirestoreService {
 
     await _users.doc(userId).set(<String, dynamic>{
       'id': userId,
-      'premium': premium,
       'streak': streak,
       'notificationTime': notificationTime,
       'notificationMode': notificationMode,

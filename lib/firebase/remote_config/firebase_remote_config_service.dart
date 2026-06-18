@@ -10,7 +10,6 @@ class FirebaseRemoteConfigService {
   final FirebaseBootstrap _bootstrap;
 
   static const Map<String, dynamic> _defaults = <String, dynamic>{
-    FirebaseRemoteConfigKeys.bypassSubscriptionEnforcement: false,
     FirebaseRemoteConfigKeys.paywallEnabled: true,
     FirebaseRemoteConfigKeys.onboardingEnabled: true,
     FirebaseRemoteConfigKeys.aiPrioritySuggestionsEnabled: true,
@@ -41,9 +40,6 @@ class FirebaseRemoteConfigService {
     }
     return remoteConfig;
   }
-
-  bool get bypassSubscriptionEnforcement =>
-      _readBool(FirebaseRemoteConfigKeys.bypassSubscriptionEnforcement);
 
   bool get paywallEnabled => _readBool(FirebaseRemoteConfigKeys.paywallEnabled);
 

@@ -1,3 +1,4 @@
+import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 
@@ -18,6 +19,16 @@ class FirebaseBootstrap {
 
     try {
       await Firebase.initializeApp();
+      await FirebaseAppCheck.instance.activate(
+        appleProvider:
+            kDebugMode
+                ? AppleProvider.debug
+                : AppleProvider.appAttestWithDeviceCheckFallback,
+        androidProvider:
+            kDebugMode
+                ? AndroidProvider.debug
+                : AndroidProvider.playIntegrity,
+      );
       _isReady = true;
       _statusMessage = 'Firebase connected';
     } catch (error, stackTrace) {

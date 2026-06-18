@@ -16,6 +16,7 @@ import '../models/planning_insight.dart';
 import '../models/routine_item.dart';
 import '../models/task_item.dart';
 import '../services/iap_service.dart';
+import '../services/premium_access_service.dart';
 
 class AppState extends ChangeNotifier {
   AppState({
@@ -31,6 +32,7 @@ class AppState extends ChangeNotifier {
 
   final FirebaseBootstrap _firebaseBootstrap;
   final IAPService _iapService;
+  final PremiumAccessService _premiumAccessService = PremiumAccessService();
   final FirebaseAuthService _authService;
   final FirebaseFirestoreService _firestoreService;
   final FirebaseRemoteConfigService _remoteConfigService;
@@ -76,6 +78,7 @@ class AppState extends ChangeNotifier {
   String? _anonymousUserId;
   String? _authErrorMessage;
   String? _syncErrorMessage;
+  bool _hasServerPremiumAccess = false;
   int _brainDumpUsesToday = 0;
   DateTime? _lastBrainDumpAt;
   DateTime? _lastTaskCompletionDate;
@@ -101,7 +104,7 @@ class AppState extends ChangeNotifier {
       !_iapService.hasAvailablePackages
           ? 'Plans not ready yet.'
           : 'Plans ready.';
-  bool get hasPremium => _iapService.isPremium;
+  bool get hasPremium => _hasServerPremiumAccess;
   bool get isRevenueCatConfigured => true;
   String? get monthlyPremiumPrice =>
       _iapService.monthlyPriceString.isEmpty
@@ -390,6 +393,7 @@ class AppState extends ChangeNotifier {
       } else {
         if (_anonymousUserId != null) {
           await _configureRevenueCatForCurrentUser();
+          await _refreshPremiumAccess();
         }
         await _finishAnonymousSetup(hydrateFromRemote: hydrateFromRemote);
       }
@@ -430,18 +434,17 @@ class AppState extends ChangeNotifier {
     }
 
     await _iapService.initialize(userId);
-    final hasPremiumAccess = await _iapService.purchase(
+    final purchaseCompleted = await _iapService.purchase(
       planId == 'yearly'
           ? SubscriptionPlan.yearly
           : SubscriptionPlan.monthly,
     );
-    notifyListeners();
-
-    if (hasPremiumAccess) {
+    if (purchaseCompleted) {
       await syncPremiumStateToCloud();
     }
 
-    return hasPremiumAccess;
+    notifyListeners();
+    return hasPremium;
   }
 
   Future<bool> restorePremiumPurchases() async {
@@ -451,14 +454,13 @@ class AppState extends ChangeNotifier {
     }
 
     await _iapService.initialize(userId);
-    final hasPremiumAccess = await _iapService.restore();
-    notifyListeners();
-
-    if (hasPremiumAccess) {
+    final restoreCompleted = await _iapService.restore();
+    if (restoreCompleted) {
       await syncPremiumStateToCloud();
     }
 
-    return hasPremiumAccess;
+    notifyListeners();
+    return hasPremium;
   }
 
   String humanizeRevenueCatError(Object error) {
@@ -466,16 +468,17 @@ class AppState extends ChangeNotifier {
   }
 
   Future<void> syncPremiumStateToCloud() async {
-    notifyListeners();
-    if (!hasPremium) {
-      return;
-    }
-
     try {
+      await _refreshPremiumAccess();
+      if (!hasPremium) {
+        notifyListeners();
+        return;
+      }
       await _syncUserProfileToFirestore();
-    } catch (_) {
-      // Keep premium active locally even if cloud sync is temporarily down.
+    } catch (error) {
+      _syncErrorMessage = _formatSyncError(error);
     }
+    notifyListeners();
   }
 
   Future<void> _configureRevenueCatForCurrentUser() async {
@@ -494,6 +497,17 @@ class AppState extends ChangeNotifier {
 
   void _handleIapChanged() {
     notifyListeners();
+  }
+
+  Future<void> _refreshPremiumAccess() async {
+    final userId = _anonymousUserId;
+    if (userId == null || !_isAnonymousAuthenticated) {
+      _hasServerPremiumAccess = false;
+      return;
+    }
+
+    final status = await _premiumAccessService.refreshPremiumStatus();
+    _hasServerPremiumAccess = status.isPremium;
   }
 
   void setTab(int index) {
@@ -1296,7 +1310,6 @@ class AppState extends ChangeNotifier {
       onboardingComplete: _isOnboardingComplete,
       selectedIntent: _selectedIntent,
       brainDumpText: _brainDumpText,
-      premium: hasPremium,
       streak: _streak,
       notificationTime: _notificationTime,
       notificationMode: _notificationMode,

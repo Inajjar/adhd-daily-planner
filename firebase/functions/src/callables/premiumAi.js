@@ -4,6 +4,10 @@ const {onCall, HttpsError} = require("firebase-functions/v2/https");
 const {defineSecret} = require("firebase-functions/params");
 const {createJsonResponse} = require("../openai/client");
 const {
+  assertPremiumAccess,
+  assertPremiumFunctionRateLimit,
+} = require("../security/premiumAccess");
+const {
   prioritySuggestionsPrompt,
   overwhelmPrompt,
   microStepsPrompt,
@@ -14,6 +18,7 @@ const {
 const {parseJson, assertString, assertArray} = require("../openai/validation");
 
 const OPENAI_API_KEY = defineSecret("OPENAI_API_KEY");
+const REVENUECAT_SECRET_KEY = defineSecret("REVENUECAT_SECRET_KEY");
 const DEFAULT_MODEL = "gpt-5-mini";
 
 function createCallable(handler) {
@@ -21,10 +26,12 @@ function createCallable(handler) {
     {
       region: "us-central1",
       cors: true,
-      secrets: [OPENAI_API_KEY],
+      enforceAppCheck: true,
+      secrets: [OPENAI_API_KEY, REVENUECAT_SECRET_KEY],
     },
     async (request) => {
-      if (!request.auth?.uid) {
+      const uid = request.auth?.uid;
+      if (!uid) {
         throw new HttpsError("unauthenticated", "Authentication required.");
       }
 
@@ -33,9 +40,22 @@ function createCallable(handler) {
         throw new HttpsError("failed-precondition", "OPENAI_API_KEY missing.");
       }
 
+      const revenueCatSecretKey = REVENUECAT_SECRET_KEY.value();
+      if (!revenueCatSecretKey) {
+        throw new HttpsError(
+          "failed-precondition",
+          "REVENUECAT_SECRET_KEY missing.",
+        );
+      }
+
       try {
+        await assertPremiumFunctionRateLimit(uid);
+        await assertPremiumAccess(uid, revenueCatSecretKey);
         return await handler(request.data || {}, apiKey);
       } catch (error) {
+        if (error instanceof HttpsError) {
+          throw error;
+        }
         console.error("Premium AI callable failed", error);
         throw new HttpsError("internal", error.message || "AI request failed.");
       }

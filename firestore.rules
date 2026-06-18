@@ -2,11 +2,32 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
+    function isOwner(userId) {
+      return request.auth != null && request.auth.uid == userId;
+    }
+
+    function protectedPremiumFieldsUnchanged() {
+      return request.resource.data.premium == resource.data.premium &&
+        request.resource.data.premiumCheckedAt == resource.data.premiumCheckedAt &&
+        request.resource.data.premiumExpiresAt == resource.data.premiumExpiresAt &&
+        request.resource.data.premiumSource == resource.data.premiumSource;
+    }
+
+    function protectedPremiumFieldsAbsentOnCreate() {
+      return !('premium' in request.resource.data) &&
+        !('premiumCheckedAt' in request.resource.data) &&
+        !('premiumExpiresAt' in request.resource.data) &&
+        !('premiumSource' in request.resource.data);
+    }
+
     match /users/{userId} {
-      allow read, write: if request.auth != null && request.auth.uid == userId;
+      allow read: if isOwner(userId);
+      allow create: if isOwner(userId) && protectedPremiumFieldsAbsentOnCreate();
+      allow update: if isOwner(userId) && protectedPremiumFieldsUnchanged();
+      allow delete: if isOwner(userId);
 
       match /{document=**} {
-        allow read, write: if request.auth != null && request.auth.uid == userId;
+        allow read, write: if isOwner(userId);
       }
     }
   }
