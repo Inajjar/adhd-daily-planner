@@ -10,7 +10,6 @@ exports.refreshPremiumStatus = onCall(
     {
       region: "us-central1",
       cors: true,
-      enforceAppCheck: true,
       secrets: [REVENUECAT_SECRET_KEY],
     },
     async (request) => {

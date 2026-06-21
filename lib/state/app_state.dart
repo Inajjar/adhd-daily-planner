@@ -506,8 +506,13 @@ class AppState extends ChangeNotifier {
       return;
     }
 
-    final status = await _premiumAccessService.refreshPremiumStatus();
-    _hasServerPremiumAccess = status.isPremium;
+    try {
+      final status = await _premiumAccessService.refreshPremiumStatus();
+      _hasServerPremiumAccess = status.isPremium;
+    } catch (error) {
+      _hasServerPremiumAccess = false;
+      debugPrint('Premium access refresh failed: $error');
+    }
   }
 
   void setTab(int index) {
